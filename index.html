@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es" dir="ltr">
+  <head>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width initial-scale=1'>
+    <meta name='mobile-web-app-capable' content='yes'>
+    <link rel="stylesheet" href="css/bootstrap.min.css" >
+    <link rel="stylesheet" href="css/estilos.css" >
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="js/bootstrap.min.js" ></script>
+    <script src='js/javascript.js'></script>
+    <title>Estudiantes JS</title>
+  </head>
+  <body>
+    <div class='container'>
+      <div class='row jumbotron'>
+        <div id="informacion1" class='col-xs-12 col-sm-12 col-md-6 col-lg-3 text-center'></div>
+        <div id="informacion2" class='col-xs-12 col-sm-12 col-md-6 col-lg-4 text-center'></div>
+        <div id="informacion3" class='col-xs-12 col-sm-12 col-md-6 col-lg-3 text-center'></div>
+        <div id="informacion4" class='col-xs-12 col-sm-12 col-md-6 col-lg-2 text-center'></div>
+      </div>
+      <div class='row'>
+        <div class='col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center'>
+          <form role='Form'>
+            <fieldset>
+                <div class=' row form-group text-center'>
+                    <div class='col-xs-12 col-sm-6 col-md-3 col-lg-3 text-center'>
+                      <button type='button' class=' btn btn-primary form-control' onclick="leerJson()">Mostrar estudiantes</button>
+                    </div>
+                    <div class='col-xs-12 col-sm-6 col-md-3 col-lg-3 text-center'>
+                      <button type='button' class=' btn btn-secondary form-control' onclick="obtenerOperaciones()">Operaciones</button>
+                    </div>
+                    <div class='col-xs-12 col-sm-6 col-md-3 col-lg-3 text-center'>
+                      <button type='button' class='btn btn-danger form-control' onclick="obtenerNota(1)">Mayor nota</button>
+                    </div>
+                    <div class='col-xs-12 col-sm-6 col-md-3 col-lg-3 text-center' >
+                      <button type='button' class='btn btn-dark form-control' onclick="obtenerNota(2)">Menor nota</button>
+                    </div>
+                  </div>
+              <div>
+            </fieldset>
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

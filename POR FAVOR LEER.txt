@@ -1,0 +1,15 @@
+Hola.
+
+A continuación indico aspectos que se adicionar al proyecto:
+
+1. Se uso Git como el sstema de control de versiones.
+la dirección del proyecto es https://github.com/yegarces30/estudiantesJS
+
+2. Debido a que estoy aprendiendo Bootstrap en la certificación de Desarrollo Web, he decidido usarlo 
+en el proyecto, por lo tanto, encontrará estilos propios de este framework css.
+
+4. Gracias al framework de Bootstrap, encontrará que la página es responsive. 
+
+3. Se desarrollaron mas operaciones, fuera del Promedio
+
+Muchas gracias.
