@@ -3,6 +3,13 @@
   Función miJson: Contiene el listado de 10 estudiantes dentro de un texto tipo JSON.
   la funcion convierte el texto JSON en un objeto JSON y lo devuelve.
 */
+
+function inicio(){
+  alert("hola");
+}
+
+inicio();
+
 function miJson(){
 
   var jsonText = '{"estudiantes":[' +

@@ -12,6 +12,10 @@ td, th{
   border: 1px solid black;
 }
 
+#div_formulario{
+  margin: 5% !important;
+  padding: 2% !important;
+}
 #informacion{
 
 
