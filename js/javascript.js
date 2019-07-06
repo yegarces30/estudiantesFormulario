@@ -4,11 +4,64 @@
   la funcion convierte el texto JSON en un objeto JSON y lo devuelve.
 */
 
-function inicio(){
-  alert("hola");
+function obtenerCookie(nombre) {
+   var nuevonombre = nombre + "=";
+   var verificar = document.cookie.split(';');
+   for (var i = 0; i < verificar.length; i++) {
+      var v = verificar[i];
+      while (v.charAt(0) == ' ') v = v.substring(1);
+      if (v.indexOf(nuevonombre) != -1) {
+         return v.substring(nuevonombre.length, v.length);
+      }
+   }
+   return "";
 }
 
-inicio();
+function agregarCookie(nombre, valor, fecha) {
+   var f = new Date();
+   f.setTime(f.getTime() + (fecha * 24 * 60 * 60 * 1000));
+   var expiracion = "expiracion=" + f.toGMTString();
+   document.cookie = nombre + "=" + valor + "; " + expiracion;
+}
+
+
+function cargarPagina(){
+  var estudiantes = obtenerCookie("estudiantes");
+
+  if (estudiantes == ""){
+    agregarCookie("estudiantes","{'estudiantes':[",30);
+    agregarCookie("cantidadEstudiantes","0",30);
+  }
+
+  var btnRegistrar        = document.getElementById("btnRegistrar");
+  btnRegistrar.addEventListener("click",adicionarEstudiante);
+}
+
+function adicionarEstudiante(){
+  var codigo        = document.getElementById("codigo");
+  var nombre        = document.getElementById("nombre");
+  var materia       = document.getElementById("materia");
+  var nota          = document.getElementById("nota");
+  var observaciones = document.getElementById("observaciones");
+
+  var estudiantes         = obtenerCookie("estudiantes");
+  var cantidadEstudiantes = parseInt(obtenerCookie("cantidadEstudiantes"),10);
+  var cantidadEstudiantes = obtenerCookie("cantidadEstudiantes");
+  console.log(cantidadEstudiantes);
+  if(cantidadEstudiantes == 0 || cantidadEstudiantes == NaN){
+    agregarCookie("cantidadEstudiantes","1",30);
+  }else{
+    estudiantes +=",";
+  }
+  estudiantes +="{'codigo':"+codigo.value+","+
+                "'nombre':"+nombre.value+","+
+                "'materia':"+materia.value+","+
+                "'nota':"+nota.value+","+
+                "'observaciones':"+observaciones.value+"}";
+  console.log(estudiantes);
+  agregarCookie("estudiantes",estudiantes,30);
+
+}
 
 function miJson(){
 
