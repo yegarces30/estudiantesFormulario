@@ -24,17 +24,184 @@ function agregarCookie(nombre, valor, fecha) {
    document.cookie = nombre + "=" + valor + "; " + expiracion;
 }
 
+function listarEstudiantes(){
+  var estudiantes = obtenerCookie("estudiantes")+"]}";
+  var objetoJson = JSON.parse(estudiantes);
 
-function cargarPagina(){
-  var estudiantes = obtenerCookie("estudiantes");
+  var sTabla ="<table class='table table-striped table-bordered table-hover'><thead>"+
+              "<tr><th scope='col'>#</th>"+
+              "<th scope='col'>Cod</th>"+
+              "<th scope='col'>Nombre</th>"+
+              "<th scope='col'>Materia</th>"+
+              "<th scope='col'>Nota</th>"+
+              "<th scope='col'>Observaciones</th>"+
+              "</thead><tbody>";
 
-  if (estudiantes == ""){
-    agregarCookie("estudiantes","{'estudiantes':[",30);
-    agregarCookie("cantidadEstudiantes","0",30);
+  for (var i=0;i<objetoJson.estudiantes.length;i++){
+    sTabla += "<tr><td>"+(i+1)+"</td><td>"+objetoJson.estudiantes[i].codigo+"</td>" +
+              "<td>"+objetoJson.estudiantes[i].nombre+"</td>" +
+              "<td>"+objetoJson.estudiantes[i].materia+"</td>"+
+              "<td>"+objetoJson.estudiantes[i].nota+"</td>"+
+              "<td>"+objetoJson.estudiantes[i].observaciones+"</td>"+
+              "<td><button name='"+objetoJson.estudiantes[i].codigo+"' onclick='mostrarRegistro("+objetoJson.estudiantes[i].codigo+")' "+
+              "class='modificar btn btn-default btn-xs' >"+
+              "<img  src='images/modificar.png' alt=''>  </img> </button></td>"+
+              "<td><button name='"+objetoJson.estudiantes[i].codigo+"' onclick='eliminar("+objetoJson.estudiantes[i].codigo+")' "+
+              "class='eliminar btn btn-default btn-xs' >"+
+              "<img  src='images/eliminar.png' alt=''>  </img> </button></td></tr>";
   }
 
-  var btnRegistrar        = document.getElementById("btnRegistrar");
-  btnRegistrar.addEventListener("click",adicionarEstudiante);
+  sTabla +=  "</tbody></table>";
+  sTabla = "<h5>Listado de estudiantes</h5>" + sTabla ;
+
+  document.getElementById('informacion1').innerHTML = sTabla;
+
+  /*
+  adicionarListenerBotonesTabla("modificar");
+  adicionarListenerBotonesTabla("eliminar");*/
+}
+
+function adicionarListenerBotonesTabla(clase){
+  var listadoBotones = document.getElementsByClassName(clase);
+  for(var i=0;i<listadoBotones.length;i++){
+    var codigo = listadoBotones[i].name;
+    if(clase == "modificar"){
+        listadoBotones[i].addEventListener("click",function(){mostrarRegistro(codigo);})
+    }else {
+      listadoBotones[i].addEventListener("click",function(){eliminar(codigo);})
+    }
+  }
+}
+
+function limpiarCampos(){
+  var codigo        = document.getElementById("codigo");
+  var nombre        = document.getElementById("nombre");
+  var materia       = document.getElementById("materia");
+  var nota          = document.getElementById("nota");
+  var observaciones = document.getElementById("observaciones");
+  var opcionGuardar = document.getElementById("opcionGuardar");
+
+  codigo.value = "";
+  codigo.disabled = false;
+  nombre.value = "";
+  materia.selectedIndex = "0";
+  nota.value = "";
+  observaciones.value = "";
+  opcionGuardar.value = "1";
+  window.scrollTo(0, 0);
+}
+
+function modificar(){
+  var cantidadEstudiantes = obtenerCookie("cantidadEstudiantes");
+  if (cantidadEstudiantes != "" && cantidadEstudiantes != "0"){
+    var estudiantes = obtenerCookie("estudiantes")+"]}";
+    var objetoJson = JSON.parse(estudiantes);
+    var codigo        = document.getElementById("codigo");
+
+    for (var i=0;i<objetoJson.estudiantes.length;i++){
+        if(objetoJson.estudiantes[i].codigo == codigo.value){
+          var codigo        = document.getElementById("codigo");
+          var nombre        = document.getElementById("nombre");
+          var materia       = document.getElementById("materia");
+          var nota          = document.getElementById("nota");
+          var observaciones = document.getElementById("observaciones");
+          var opcionGuardar = document.getElementById("opcionGuardar");
+
+          objetoJson.estudiantes[i].codigo = codigo.value;
+          objetoJson.estudiantes[i].nombre = nombre.value;
+          objetoJson.estudiantes[i].materia = materia.value;
+          objetoJson.estudiantes[i].nota = nota.value;
+          objetoJson.estudiantes[i].observaciones = observaciones.value;
+          break;
+        }
+    }
+    estudiantes = JSON.stringify(objetoJson);
+    estudiantes = estudiantes.replace("]}","");
+    agregarCookie("estudiantes",estudiantes,30);
+    limpiarCampos();
+    alert("Registro modificado con éxito.");
+  }
+}
+
+function mostrarRegistro(codigo){
+  var cantidadEstudiantes = obtenerCookie("cantidadEstudiantes");
+  if (cantidadEstudiantes != "" && cantidadEstudiantes != "0"){
+    var estudiantes = obtenerCookie("estudiantes")+"]}";
+    var objetoJson = JSON.parse(estudiantes);
+
+    for (var i=0;i<objetoJson.estudiantes.length;i++){
+        if(objetoJson.estudiantes[i].codigo == codigo){
+          var codigo        = document.getElementById("codigo");
+          var nombre        = document.getElementById("nombre");
+          var materia       = document.getElementById("materia");
+          var nota          = document.getElementById("nota");
+          var observaciones = document.getElementById("observaciones");
+          var opcionGuardar = document.getElementById("opcionGuardar");
+
+          codigo.value = objetoJson.estudiantes[i].codigo;
+          codigo.disabled = true;
+          nombre.value = objetoJson.estudiantes[i].nombre;
+          materia.value = objetoJson.estudiantes[i].materia;
+          nota.value = objetoJson.estudiantes[i].nota;
+          observaciones.value = objetoJson.estudiantes[i].observaciones;
+          opcionGuardar.value = "2";
+          window.scrollTo(0, 0);
+          break;
+        }
+    }
+  }
+}
+
+function eliminar(codigo){
+  var cantidadEstudiantes = obtenerCookie("cantidadEstudiantes");
+  if (cantidadEstudiantes != "" && cantidadEstudiantes != "0"){
+    var respuesta= confirm("¿Desea eliminar el registro seleccionado?");
+    if (respuesta){
+      var estudiantes = obtenerCookie("estudiantes")+"]}";
+      var objetoJson = JSON.parse(estudiantes);
+
+      for (var i=0;i<objetoJson.estudiantes.length;i++){
+          if(objetoJson.estudiantes[i].codigo == codigo){
+              objetoJson.estudiantes.splice(i,i);
+            break;
+          }
+      }
+
+      estudiantes = JSON.stringify(objetoJson);
+      estudiantes = estudiantes.replace("]}","");
+      agregarCookie("estudiantes",estudiantes,30);
+      limpiarCampos();
+      listarEstudiantes();
+
+    }
+  }
+}
+
+function cargarPagina(){
+  var cantidadEstudiantes = obtenerCookie("cantidadEstudiantes");
+  if (cantidadEstudiantes == "" || cantidadEstudiantes == "0"){
+    agregarCookie("estudiantes",'{"estudiantes":[',30);
+    agregarCookie("cantidadEstudiantes","0",30);
+  }else{
+    listarEstudiantes();
+  }
+
+  var btnGuardar        = document.getElementById("btnGuardar");
+  btnGuardar.addEventListener("click",function(){guardar();});
+
+  var btnNuevo        = document.getElementById("btnNuevo");
+  btnNuevo.addEventListener("click",limpiarCampos);
+
+}
+
+function guardar(){
+  var opcionGuardar = document.getElementById("opcionGuardar");
+  if(opcionGuardar.value == "1"){
+    adicionarEstudiante();
+  }else{
+    modificar();
+  }
+  listarEstudiantes();
 }
 
 function adicionarEstudiante(){
@@ -53,54 +220,14 @@ function adicionarEstudiante(){
   }else{
     estudiantes +=",";
   }
-  estudiantes +="{'codigo':"+codigo.value+","+
-                "'nombre':"+nombre.value+","+
-                "'materia':"+materia.value+","+
-                "'nota':"+nota.value+","+
-                "'observaciones':"+observaciones.value+"}";
-  console.log(estudiantes);
+  estudiantes +='{"codigo":"'+codigo.value.trim()+'",'+
+                '"nombre":"'+nombre.value.trim()+'",'+
+                '"materia":"'+materia.value.trim()+'",'+
+                '"nota":'+nota.value.trim()+','+
+                '"observaciones":"'+observaciones.value.trim()+'"}';
   agregarCookie("estudiantes",estudiantes,30);
-
-}
-
-function miJson(){
-
-  var jsonText = '{"estudiantes":[' +
-  '{"codigo":"001","nombre":"Juan Jimenez","nota":4.0 },' +
-  '{"codigo":"002","nombre":"Pedro Motessi","nota":3.2 },' +
-  '{"codigo":"003","nombre":"Angela Aguilar","nota":4.2 },' +
-  '{"codigo":"004","nombre":"Camilo Escobar","nota":3.0 },' +
-  '{"codigo":"005","nombre":"Andres Palomino","nota":4.9 },' +
-  '{"codigo":"006","nombre":"Laura Acuña","nota": 4.1},' +
-  '{"codigo":"007","nombre":"Yeison Garcia","nota":5.0 },' +
-  '{"codigo":"008","nombre":"Leidy Velez","nota":3.5 },' +
-  '{"codigo":"009","nombre":"Alberto Andrade","nota":4.0 },' +
-  '{"codigo":"010","nombre":"Lorena Zuñiga","nota":4.3}'  +
-  ']}';
-
-  var jsObj = JSON.parse(jsonText);
-  return jsObj;
-}
-
-/*
-  Función leerJson: Esta función hace el llamado a la función miJson para obtener el objeto.
-  Luego recorreo el objeto JSON para obtener la información de todos los estudiantes y mostrarla en una tabla.
-*/
-function leerJson(){
-  var objetoJson  = miJson();
-
-  var sTabla ="<table class='table-striped'><thead><tr><th scope='col'>#</th><th scope='col'>Cod</th><th scope='col'>Nombre</th><th scope='col'>Nota</th></thead><tbody>";
-
-  for (var i=0;i<objetoJson.estudiantes.length;i++){
-    sTabla += "<tr><td>"+(i+1)+"</td><td>"+objetoJson.estudiantes[i].codigo+"</td>" +
-              "<td>"+objetoJson.estudiantes[i].nombre+"</td>" +
-              "<td>"+objetoJson.estudiantes[i].nota+"</td></tr>";
-  }
-
-  sTabla +=  "</tbody></table>";
-  sTabla = "<h5>Listado de estudiantes</h5>" + sTabla ;
-
-  document.getElementById('informacion1').innerHTML = sTabla;
+  alert("Nota del estudiante registrada con éxito.");
+  limpiarCampos();
 }
 
 /*
