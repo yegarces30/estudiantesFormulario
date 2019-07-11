@@ -16,7 +16,17 @@ td, th{
   margin: 5% !important;
   padding: 2% !important;
 }
-#informacion{
 
+.animacion1{
+  border-radius: 10px 10px 10px 10px !important;
+  -moz-border-radius: 10px 10px 10px 10px !important;
+  -webkit-border-radius: 10px 10px 10px 10px !important;
+  border: 11px ridge #f20808;
+}
 
+.animacion2{
+  border-radius: 10px 10px 10px 10px !important;
+  -moz-border-radius: 10px 10px 10px 10px !important;
+  -webkit-border-radius: 10px 10px 10px 10px !important;
+  border: 11px groove #0930f0;
 }
